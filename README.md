@@ -1,5 +1,4 @@
-**Airflow ETL Pipeline Project
-**
+**Airflow ETL Pipeline Project**
 
 This project implements an ETL pipeline using Apache Airflow to automate the extraction, transformation, and loading of data. 
 The pipeline processes data from multiple sources, transforms it, and loads it into a target system. The project is containerized 
