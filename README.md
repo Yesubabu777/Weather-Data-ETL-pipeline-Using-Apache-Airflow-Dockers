@@ -1,119 +1,101 @@
-## Weather Data ETL Pipeline Using Apache Airflow & Docker
-Project Overview
-This project implements an ETL (Extract, Transform, Load) pipeline for weather data using Apache Airflow and Docker. The pipeline will fetch weather data from an API, transform the data (e.g., cleaning, parsing, and aggregating), and load it into a target database (e.g., PostgreSQL). The use of Docker containers ensures that the pipeline runs in an isolated, reproducible environment.
+**Airflow ETL Pipeline Project
+**
 
-Key Features
-Extract: Fetch weather data from a public weather API .
+This project implements an ETL pipeline using Apache Airflow to automate the extraction, transformation, and loading of data. 
+The pipeline processes data from multiple sources, transforms it, and loads it into a target system. The project is containerized 
+using Docker for easy deployment and management.
 
-Transform: Clean and process the raw data, including filtering, converting units, and handling missing values.
+**Technologies Used**
+- Apache Airflow
+- Docker
+- Python
+- PostgreSQL (or any other database you're using)
+- (Any other tools you may have used, such as Astronomer, Kubernetes, etc.)
 
-Load: Store the processed data into a database, such as PostgreSQL or a data warehouse.
+Getting Started
 
-Automation: The ETL pipeline is managed and automated with Apache Airflow, enabling scheduling, retries, and logging.
+To run this project locally, follow these steps:
 
-Dockerization: All components are containerized using Docker, making the setup portable and easy to deploy.
+**1. Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/airflow-etl-project.git
+   cd airflow-etl-project
+   ```
 
-Prerequisites
-Python (>= 3.8)
+**2. Set up the environment:**
+   - Make sure you have Docker and Docker Compose installed. If not, you can download and install them from [here](https://www.docker.com/get-started).
+     
+**3. Run the Docker containers:**
+   ```bash
+   docker-compose up
+   ```
 
-Apache Airflow
+**4. Access Airflow UI:**
+   - Once the containers are up, access the Airflow web UI by navigating to [http://localhost:8080](http://localhost:8080) in your browser.
 
-Docker (for containerizing the environment)
+**5. Access PostgreSQL database (if needed):**
+   - The PostgreSQL service is available on port `5432`.
 
-PostgreSQL (or another database of your choice)
+**6. Running DAGs:**
+- Once Airflow is up and running, the DAGs will be automatically triggered according to their schedule.
+   - You can also manually trigger the DAGs from the Airflow UI.
 
-Access to a Weather API (OpenWeatherMap, Weatherstack, etc.)
+**How to Use the Project**
+- The project includes several Airflow DAGs (Direct Acyclic Graphs) that automate different ETL processes.
+- Each DAG is responsible for extracting data from a source, transforming it, and loading it into a target system.
+- You can monitor the execution of these tasks in the Airflow web UI.
+- You can trigger, pause, or inspect the tasks as needed.
 
-Setup & Installation
-Follow the steps below to set up and run the project.
+Example DAGs:
+- `etl_data_pipeline`: Extracts data from Source A, transforms it, and loads it into the Target system.
+- `backup_database`: Periodically backs up the database.
 
-### 1. Clone the repository
-Clone this repository to your local machine:
+Directory Structure
 
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/weather-etl-pipeline.git
-cd weather-etl-pipeline
-### 2. Install Docker
-If you haven't installed Docker yet, download and install it from Docker's official website.
+```
+├── airflow/
+│   ├── dags/                  # Directory for Airflow DAGs
+│   ├── docker-compose.yml     # Docker Compose configuration file
+│   ├── Dockerfile             # Dockerfile for Airflow
+│   └── requirements.txt       # Python dependencies
+├── scripts/                   # Any custom scripts for data processing or transformations
+├── README.md                  # Project documentation
+└── .gitignore                 # Files/folders to ignore in Git
+```
 
-### 3. Docker Compose for Development Environment
-The project comes with a docker-compose.yml file that will set up the necessary containers, including Apache Airflow and PostgreSQL.
+Configuration
 
-To build and start the containers:
+- The Airflow setup uses environment variables stored in the `.env` file for configuration.
+- You can modify these variables to configure the database connection, Airflow scheduler settings, etc.
+- Example `.env` file:
+  ```env
+  AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://user:password@localhost:5432/db_name
+  ```
 
-bash
-Copy
-Edit
-docker-compose up --build
-This will start the following services:
+  - For PostgreSQL:
+    - Username: `user`
+    - Password: `password`
+    - Database Name: `airflow_db`
 
-Apache Airflow (with web UI accessible at localhost:8080)
+**Running Tests**
 
-PostgreSQL database (used for storing weather data)
+If you have tests for your project, you can run them with the following command:
+```bash
+python -m unittest discover
+```
+This will discover and run all test files in the `tests/` directory.
 
+**Open Weather API's**: Airpollution api is used to fetch the data for the selected latitude and longitude.So for the accessing of the data or extract the you need the lat,long and api key
 
-Replace your_api_key_here with your actual API key from the weather provider.
-### 4. Running Apache Airflow
-Once your containers are up and running, go to the Airflow web UI (http://localhost:8080). The default login is:
+**Contributing**
 
-Username: airflow
+We welcome contributions to this project! If you'd like to contribute, please fork the repository and create a pull request with your proposed changes.
 
-Password: airflow
+- Make sure your changes are covered by tests.
+- Follow the existing code style and structure.
+- Include relevant documentation where applicable.
 
-You can then trigger your DAG manually or wait for the scheduled execution.
+License
 
-### 5. DAG Configuration
-The main ETL logic is contained within the Apache Airflow DAG. The DAG is responsible for:
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Extracting weather data from the weather API.
-
-Transforming the data.
-
-Loading the transformed data into the PostgreSQL database.
-
-### 6. Scheduling & Automation
-The DAG is scheduled to run at a specified interval (e.g., every day). You can modify the scheduling in the Airflow web UI or by editing the schedule_interval parameter in the weather_etl.py file.
-
-### 7. Monitoring
-Apache Airflow provides detailed logging for monitoring the progress of each task in the ETL pipeline. You can access these logs from the Airflow web UI.
-
-Folder Structure
-bash
-Copy
-Edit
-weather-etl-pipeline/
-│
-├── dags/                  # Airflow DAGs (ETL pipeline scripts)
-│   ├── weather_etl.py     # Main ETL pipeline script
-│   └── requirements.txt   # List of required Python packages
-├── docker/                # Docker-related files
-│   ├── Dockerfile         # Custom Docker image for Airflow
-│   └── docker-compose.yml # Docker Compose setup for the project
-├── .env                   # Environment variables for API keys and DB settings
-└── README.md              # This file
-Usage
-Running the ETL Pipeline
-Once everything is set up, the ETL pipeline will run according to the schedule set in the Airflow DAG. You can also manually trigger the pipeline from the Airflow web UI.
-
-Accessing Data
-After the pipeline runs, the transformed weather data will be loaded into the PostgreSQL database. You can query the database to explore the data:
-
-sql
-Copy
-Edit
-SELECT * FROM weather_data;
-Technologies Used
-Apache Airflow: Orchestrates and automates the ETL process.
-
-Docker: Used for containerizing the services (Airflow, PostgreSQL).
-
-PostgreSQL: Database for storing the weather data.
-
-Weather API: External API for retrieving weather data 
-
-Python: Programming language for developing the ETL pipeline.
-
-Contributing
-We welcome contributions! If you have suggestions or improvements, feel free to create an issue or submit a pull request.
