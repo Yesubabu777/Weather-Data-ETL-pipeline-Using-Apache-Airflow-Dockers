@@ -4,7 +4,7 @@ This project implements an ETL pipeline using Apache Airflow to automate the ext
 The pipeline processes data from multiple sources, transforms it, and loads it into a target system. The project is containerized 
 using Docker for easy deployment and management.
 
-**Technologies Used**
+## Technologies Used
 - Apache Airflow
 - Docker
 - Python
